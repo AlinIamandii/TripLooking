@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripLooking.API", "TripLooking\TripLooking.API.csproj", "{9A639C23-15DE-445E-B8D5-73971FD23C27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripLooking.API", "TripLooking.API\TripLooking.API.csproj", "{9A639C23-15DE-445E-B8D5-73971FD23C27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripLooking.Database", "TripLooking.Database\TripLooking.Database.csproj", "{E8564A86-F2A2-45A9-8050-23623A7A96E2}"
 EndProject
