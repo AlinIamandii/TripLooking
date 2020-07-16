@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
+using TripLooking.Persistence;
+
 namespace TripLooking.API
 {
     public sealed class Startup
@@ -20,6 +23,15 @@ namespace TripLooking.API
         {
             services.AddControllers()
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
+            services.AddDbContext<TripsContext>(config =>
+            {
+                config.UseSqlServer(Configuration.GetConnectionString("TripsConnection"));
+            });
+
+            services.AddScoped<ITripsRepository, TripsRepository>();
+
+            services.AddSwaggerGen();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -28,6 +40,12 @@ namespace TripLooking.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app
                 .UseHttpsRedirection()
