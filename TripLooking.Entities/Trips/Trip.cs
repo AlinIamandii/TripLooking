@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace TripLooking.Entities.Trips
 {
@@ -18,7 +21,7 @@ namespace TripLooking.Entities.Trips
         public string Description { get; private set; }
 
         public bool Private { get; private set; }
-
+        
         public ICollection<Photo> Photos { get; private set; }
 
         public ICollection<Comment> Comments { get; private set; }
@@ -26,6 +29,23 @@ namespace TripLooking.Entities.Trips
         public void AddComment(Comment comment)
         {
             this.Comments.Add(comment);
+        }
+
+        public void RemoveComment(Guid commentId)
+        {
+            var comment = this.Comments.FirstOrDefault(c => c.Id == commentId);
+            
+            if(comment != null)
+            {
+                this.Comments.Remove(comment);
+            }
+        }
+
+        public void Update(string title, string description, bool @private)
+        {
+            Title = title;
+            Description = description;
+            Private = @private;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TripLooking.Entities.Identity;
 using TripLooking.Entities.Trips;
 
 namespace TripLooking.Persistence
@@ -11,6 +12,8 @@ namespace TripLooking.Persistence
         }
 
         public DbSet<Trip> Trips { get; set; }
+
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +36,10 @@ namespace TripLooking.Persistence
                 .Property(c => c.Id)
                 .IsRequired()
                 .ValueGeneratedNever();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(x => x.Email)
+                .IsUnique();
         }
     }
 }

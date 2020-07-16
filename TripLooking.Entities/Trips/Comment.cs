@@ -10,8 +10,8 @@ namespace TripLooking.Entities.Trips
             UserId = userId;
         }
 
-        public string Content { get; private set; }
+        public string Content { get; set; }
         
-        public Guid UserId { get; private set; }
+        public Guid UserId { get; set; }
     }
 }

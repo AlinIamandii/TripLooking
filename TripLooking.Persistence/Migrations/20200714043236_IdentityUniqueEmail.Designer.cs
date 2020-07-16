@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TripLooking.Persistence;
 
 namespace TripLooking.Persistence.Migrations
 {
     [DbContext(typeof(TripsContext))]
-    partial class TripsContextModelSnapshot : ModelSnapshot
+    [Migration("20200714043236_IdentityUniqueEmail")]
+    partial class IdentityUniqueEmail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,21 +28,19 @@ namespace TripLooking.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -69,6 +69,7 @@ namespace TripLooking.Persistence.Migrations
             modelBuilder.Entity("TripLooking.Entities.Trips.Photo", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -111,16 +112,14 @@ namespace TripLooking.Persistence.Migrations
                 {
                     b.HasOne("TripLooking.Entities.Trips.Trip", null)
                         .WithMany("Comments")
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TripId");
                 });
 
             modelBuilder.Entity("TripLooking.Entities.Trips.Photo", b =>
                 {
                     b.HasOne("TripLooking.Entities.Trips.Trip", null)
                         .WithMany("Photos")
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TripId");
                 });
 #pragma warning restore 612, 618
         }

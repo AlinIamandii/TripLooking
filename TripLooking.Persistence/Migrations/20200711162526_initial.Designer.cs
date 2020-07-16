@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TripLooking.Persistence;
 
 namespace TripLooking.Persistence.Migrations
 {
     [DbContext(typeof(TripsContext))]
-    partial class TripsContextModelSnapshot : ModelSnapshot
+    [Migration("20200711162526_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,35 +21,10 @@ namespace TripLooking.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TripLooking.Entities.Identity.User", b =>
+            modelBuilder.Entity("TripLooking.Persistence.Entities.Trips.Comment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("TripLooking.Entities.Trips.Comment", b =>
-                {
-                    b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
@@ -66,9 +43,10 @@ namespace TripLooking.Persistence.Migrations
                     b.ToTable("Comment");
                 });
 
-            modelBuilder.Entity("TripLooking.Entities.Trips.Photo", b =>
+            modelBuilder.Entity("TripLooking.Persistence.Entities.Trips.Photo", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -87,7 +65,7 @@ namespace TripLooking.Persistence.Migrations
                     b.ToTable("Photo");
                 });
 
-            modelBuilder.Entity("TripLooking.Entities.Trips.Trip", b =>
+            modelBuilder.Entity("TripLooking.Persistence.Entities.Trips.Trip", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -107,20 +85,18 @@ namespace TripLooking.Persistence.Migrations
                     b.ToTable("Trips");
                 });
 
-            modelBuilder.Entity("TripLooking.Entities.Trips.Comment", b =>
+            modelBuilder.Entity("TripLooking.Persistence.Entities.Trips.Comment", b =>
                 {
-                    b.HasOne("TripLooking.Entities.Trips.Trip", null)
+                    b.HasOne("TripLooking.Persistence.Entities.Trips.Trip", null)
                         .WithMany("Comments")
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TripId");
                 });
 
-            modelBuilder.Entity("TripLooking.Entities.Trips.Photo", b =>
+            modelBuilder.Entity("TripLooking.Persistence.Entities.Trips.Photo", b =>
                 {
-                    b.HasOne("TripLooking.Entities.Trips.Trip", null)
+                    b.HasOne("TripLooking.Persistence.Entities.Trips.Trip", null)
                         .WithMany("Photos")
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TripId");
                 });
 #pragma warning restore 612, 618
         }
