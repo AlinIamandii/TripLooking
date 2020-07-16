@@ -22,5 +22,10 @@ namespace TripLooking.Entities.Trips
         public ICollection<Photo> Photos { get; private set; }
 
         public ICollection<Comment> Comments { get; private set; }
+
+        public void AddComment(Comment comment)
+        {
+            this.Comments.Add(comment);
+        }
     }
 }

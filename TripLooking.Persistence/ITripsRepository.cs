@@ -7,5 +7,11 @@ namespace TripLooking.Persistence
     public interface ITripsRepository
     {
         Task<Trip> GetTripById(Guid id);
+
+        Task Create(Trip entity);
+
+        void Update(Trip entity);
+
+        Task SaveChanges();
     }
 }

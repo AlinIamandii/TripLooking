@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TripLooking.Entities\TripLooking.Entities.csproj" />
     <ProjectReference Include="..\TripLooking.Persistence\TripLooking.Persistence.csproj" />
   </ItemGroup>

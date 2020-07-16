@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
+using TripLooking.Business;
+using TripLooking.Business.Trips;
+using TripLooking.Business.Trips.Services;
+using TripLooking.Business.Trips.Services.Comments;
 using TripLooking.Persistence;
 
 namespace TripLooking.API
@@ -21,6 +26,18 @@ namespace TripLooking.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(config =>
+            {
+                config.AddProfile<TripsMappingProfiles>();
+            });
+
+            services.AddScoped<ITripsService, TripsService>();
+            services.AddScoped<ICommentsService, CommentsService>();
+
+            services.AddScoped<ITripsRepository, TripsRepository>();
+
+            services.AddSwaggerGen(); 
+            
             services.AddControllers()
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
@@ -28,10 +45,6 @@ namespace TripLooking.API
             {
                 config.UseSqlServer(Configuration.GetConnectionString("TripsConnection"));
             });
-
-            services.AddScoped<ITripsRepository, TripsRepository>();
-
-            services.AddSwaggerGen();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

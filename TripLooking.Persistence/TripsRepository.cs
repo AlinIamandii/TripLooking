@@ -19,9 +19,22 @@ namespace TripLooking.Persistence
 
         public async Task<Trip> GetTripById(Guid id)
         {
-            IQueryable<Trip> test = context.Trips;
-            return test.Where(x => x.Id == id).FirstOrDefault();
-            //return await this.context.Trips.FindAsync(id);
+            return await this.context.Trips.FindAsync(id);
+        }
+
+        public async Task Create(Trip entity)
+        {
+            await this.context.Trips.AddAsync(entity);
+        }
+
+        public void Update(Trip entity)
+        {
+            this.context.Trips.Update(entity);
+        }
+
+        public async Task SaveChanges()
+        {
+            await this.context.SaveChangesAsync();
         }
     }
 }
