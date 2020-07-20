@@ -87,7 +87,10 @@ namespace TripLooking.API
             app
                 .UseHttpsRedirection()
                 .UseRouting()
-                .UseCors(options => options.AllowAnyOrigin().AllowAnyMethod())
+                .UseCors(options => options
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader())
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseEndpoints(endpoints => endpoints.MapControllers());
