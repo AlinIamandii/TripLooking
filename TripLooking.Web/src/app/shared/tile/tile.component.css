@@ -1,0 +1,63 @@
+
+
+.tile {
+  width: 260px;
+  height: 280px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.15);
+  margin-top: 20px;
+  margin-left: 20px;
+  float: left;
+  cursor: pointer;
+}
+
+.tile .header {
+  height: 180px;
+  background-color: #f4f4f4;
+  border-radius: 4px 4px 0 0;
+  color: white;
+  font-weight: 300;
+}
+
+.tile .header .count {
+  font-size: 64px;
+  margin: auto;
+  padding: 40px 0;
+
+  display: flex;
+  justify-content: center;
+}
+mat-icon {
+  font-size: 80px;
+
+  width: 80px;
+  height: 80px;
+}
+
+.tile .header .title {
+  font-size: 20px;
+}
+
+.tile .body {
+  height: 80px;
+  border-radius: 0 0 4px 4px;
+  color: #333333;
+  background-color: white;
+
+  padding-top: 20px;
+}
+
+.tile .body .title {
+  text-align: center;
+  padding-top: 12px;
+  font-size: 28px;
+  padding-top: 2%;
+}
+
+.tile.job .header {
+  background: linear-gradient(to bottom right, #27ae60, #87bc27);
+}
+
+.tile.job .body {
+  color: #27ae60;
+}

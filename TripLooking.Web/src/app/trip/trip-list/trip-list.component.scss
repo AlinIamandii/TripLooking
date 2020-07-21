@@ -1,0 +1,14 @@
+@import "../../../assets/styles/layout.scss";
+
+cards {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  padding: 32px;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+}

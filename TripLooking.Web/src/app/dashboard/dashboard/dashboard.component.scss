@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css");
+
+* {
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+}
+
+body {
+  background-color: #ececec;
+}
+
+:host {
+  display: block;
+  height: calc(100% - 60px);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+app-tile :hover {
+  transform: scale(1.1);
+}

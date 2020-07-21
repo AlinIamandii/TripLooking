@@ -1,0 +1,12 @@
+::ng-deep html {
+  width: 100%;
+  height: 100vh;
+  background-color: #edeff7;
+}
+::ng-deep body{
+  height: calc(100vh - 60px);
+}
+
+app-header{
+  background: white;
+}

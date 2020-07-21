@@ -1,0 +1,115 @@
+@import "../../../assets/styles/layout.scss";
+
+h1 {
+  margin-left: 20px;
+}
+
+.flex-row-space-around {
+  margin: 20px;
+}
+
+.image-section img {
+  width: 80%;
+}
+
+.form-section {
+  width: 50%;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  font-family: "Open Sans";
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px rgba(0, 23, 87, 0.08);
+}
+
+.add-photos {
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-file {
+  width: 100px;
+}
+
+.photos-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.photos {
+  display: flex;
+  flex-direction: column;
+
+  .photos-title {
+    margin-bottom: 15px;
+  }
+}
+
+.trip-description {
+  width: 99%;
+  min-height: 150px;
+  font-family: "Open Sans";
+  font-size: 16px;
+  font-weight: 200;
+}
+
+.form-group {
+  overflow: hidden;
+}
+
+label {
+  margin-right: 10px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+input[type="text"] {
+  width: 100%;
+  display: block;
+  border: none;
+  padding: 6px 30px;
+  font-family: "Open Sans";
+  box-sizing: border-box;
+  text-align: center;
+  outline: none;
+  font-size: 20px;
+  font-weight: 600;
+  background-color: white;
+}
+
+input[type="text"]:focus {
+  border-bottom: 1px solid #999;
+}
+
+p {
+  font-size: 16px;
+  font-weight: 200;
+}
+
+button {
+  background-color: #27ae60;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  width: 20%;
+  height: 40px;
+  border-radius: 8px;
+  font-family: "Open Sans";
+  font-weight: bold;
+}
+
+button span {
+  color: white !important;
+}
+
+@media (max-width: 900px) {
+  .flex-row-space-around {
+    flex-direction: column;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
