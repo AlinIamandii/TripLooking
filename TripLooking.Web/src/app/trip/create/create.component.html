@@ -1,0 +1,11 @@
+<div [formGroup]="form">
+  <label>Nume:</label>
+  <input type="text" formControlName="tripName" />
+
+  <label>Detalii:</label>
+  <input type="text" formControlName="tripDetails" />
+</div>
+
+<app-submit-button (onClick)="clicked()" [formState]="isFormValid"
+  >Submit</app-submit-button
+>

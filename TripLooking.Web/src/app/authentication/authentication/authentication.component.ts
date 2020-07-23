@@ -6,6 +6,7 @@ import { LoginModel } from '../models/login.model';
 import { RegisterModel } from '../models/register.model';
 import { AuthenticationService } from '../services/authentication.service';
 import { UserService } from 'src/app/shared/user.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-authentication',
@@ -20,6 +21,7 @@ export class AuthenticationComponent implements OnDestroy {
   public password: string = null;
   public fullName: string = null;
 
+  public form: FormGroup;
   public data = [
     {
       fruit: 'Orange',
@@ -35,6 +37,13 @@ export class AuthenticationComponent implements OnDestroy {
     },
   ];
 
+  public config = {
+    email: 'cutarescu@gmail.com',
+    password: 'parola',
+    fullName: ' gigi',
+  };
+
+  public defaultEmail: string = 'default@domain.net';
   // in constructor apar serviciile pe care le injectam la noi in aplicatie
   constructor(
     private readonly authenticationService: AuthenticationService,
@@ -42,6 +51,11 @@ export class AuthenticationComponent implements OnDestroy {
     private readonly userService: UserService
   ) {
     this.subscription = new Subscription();
+    this.form = new FormGroup({
+      email: new FormControl(this.config.email, [Validators.maxLength(5)]),
+      password: new FormControl(this.config.password, [Validators.required]),
+      fullName: new FormControl(this.config.fullName, []),
+    });
   }
 
   public ngOnDestroy(): void {
@@ -59,19 +73,18 @@ export class AuthenticationComponent implements OnDestroy {
   public authenticate(): void {
     if (this.isSetRegistered) {
       // initializam variabila cu modelul stabilit pentru register
-      const registerModel: RegisterModel = {
-        email: this.email,
-        password: this.password,
-        fullName: this.fullName,
-      };
-
-      this.subscription.add(
-        // aici apelam metoda register din serviciu, pentru a face requestul catre back end
-        this.authenticationService.register(registerModel).subscribe(() => {
-          this.router.navigate(['dashboard']);
-          this.userService.email.next(registerModel.email);
-        })
-      );
+      // const registerModel: RegisterModel = {
+      //   email: this.emailControl.value,
+      //   password: this.passwordControl.value,
+      //   fullName: this.fullNameControl.value,
+      // };
+      // this.subscription.add(
+      //   // aici apelam metoda register din serviciu, pentru a face requestul catre back end
+      //   this.authenticationService.register(registerModel).subscribe(() => {
+      //     this.router.navigate(['dashboard']);
+      //     this.userService.email.next(registerModel.email);
+      //   })
+      // );
     } else {
       // initializam variabila cu modelul stabilit pentru login
       const loginModel: LoginModel = {
@@ -87,5 +100,17 @@ export class AuthenticationComponent implements OnDestroy {
         })
       );
     }
+  }
+
+  public get emailControl(): FormControl {
+    return this.form.controls.email as FormControl;
+  }
+
+  public get isFormValid(): boolean {
+    return this.form.valid;
+  }
+
+  public setValue(): void {
+    this.emailControl.setValue(this.defaultEmail);
   }
 }

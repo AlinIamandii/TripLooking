@@ -7,41 +7,45 @@
   </thead>
   <tbody>
     <tr *ngFor="let fruit of data">
-      <td>{{fruit.fruit}}</td>
-      <td>{{fruit.color}}</td>
+      <td>{{ fruit.fruit }}</td>
+      <td>{{ fruit.color }}</td>
     </tr>
-
   </tbody>
 </table>
 
-
-<div class="authentication-container">
-  <img src="assets/images/sign_in.svg">
+<div class="authentication-container" [formGroup]="form">
+  <img src="assets/images/sign_in.svg" />
   <div class="authentication-content">
-    <span class="login-label">{{isSetRegistered? 'Register': 'Log in'}} </span>
+    <span class="login-label"
+      >{{ isSetRegistered ? "Register" : "Log in" }}
+    </span>
+    <button (click)="setValue()">
+      Set default email
+    </button>
+
     <label>Email</label>
-    <input type="email"
-           [(ngModel)]="email" />
+    <input type="email" formControlName="email" />
+    <div *ngIf="!emailControl.valid">
+      Email is wrong
+    </div>
+
     <label>Password</label>
-    <input type="password"
-           [(ngModel)]="password" />
+    <input type="password" formControlName="password" />
     <ng-container *ngIf="isSetRegistered">
       <label>Full name</label>
-      <input type="text"
-             [(ngModel)]="fullName" />
+      <input type="text" formControlName="fullName" />
     </ng-container>
 
-    <span class="not-registered"><input type="checkbox"
-             (click)="setRegister()" />
-      <p>{{isSetRegistered? 'Go back to log in': 'I am not registered yet'}}</p>
+    <span class="not-registered"
+      ><input type="checkbox" (click)="setRegister()" />
+      <p>
+        {{ isSetRegistered ? "Go back to log in" : "I am not registered yet" }}
+      </p>
     </span>
 
     <span class="admin">
-      <input type="checkbox"
-             (click)="setAdmin()">
+      <input type="checkbox" (click)="setAdmin()" />
       <p>I want to be an admin</p>
     </span>
-    <button type="button"
-            (click)="authenticate()"><span>{{isSetRegistered? 'Register': 'Login'}}</span></button>
   </div>
 </div>

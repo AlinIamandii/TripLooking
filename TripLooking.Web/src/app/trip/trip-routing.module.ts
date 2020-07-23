@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { TripDetailsComponent } from './trip-details/trip-details.component';
 import { TripListComponent } from './trip-list/trip-list.component';
-
+import { CreateComponent } from './create/create.component';
 
 const routes: Routes = [
   {
@@ -15,6 +15,10 @@ const routes: Routes = [
     path: 'details',
     pathMatch: 'full',
     component: TripDetailsComponent,
+  },
+  {
+    path: 'create/{:id}',
+    component: CreateComponent,
   },
 ];
 
