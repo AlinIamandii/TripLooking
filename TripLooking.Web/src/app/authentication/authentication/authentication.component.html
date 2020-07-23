@@ -1,14 +1,34 @@
+<table>
+  <thead>
+    <tr>
+      <th>Fruit</th>
+      <th>Fruit color</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let fruit of data">
+      <td>{{fruit.fruit}}</td>
+      <td>{{fruit.color}}</td>
+    </tr>
+
+  </tbody>
+</table>
+
+
 <div class="authentication-container">
   <img src="assets/images/sign_in.svg">
   <div class="authentication-content">
     <span class="login-label">{{isSetRegistered? 'Register': 'Log in'}} </span>
     <label>Email</label>
-    <input type="email" />
+    <input type="email"
+           [(ngModel)]="email" />
     <label>Password</label>
-    <input type="password" />
+    <input type="password"
+           [(ngModel)]="password" />
     <ng-container *ngIf="isSetRegistered">
       <label>Full name</label>
-      <input type="text" />
+      <input type="text"
+             [(ngModel)]="fullName" />
     </ng-container>
 
     <span class="not-registered"><input type="checkbox"
@@ -21,6 +41,7 @@
              (click)="setAdmin()">
       <p>I want to be an admin</p>
     </span>
-    <button type="button"><span>{{isSetRegistered? 'Register': 'Login'}}</span></button>
+    <button type="button"
+            (click)="authenticate()"><span>{{isSetRegistered? 'Register': 'Login'}}</span></button>
   </div>
 </div>
