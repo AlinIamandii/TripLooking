@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using TripLooking.Entities.Trips.DomainEvents;
 
 namespace TripLooking.Entities.Trips
 {
@@ -29,6 +29,7 @@ namespace TripLooking.Entities.Trips
         public void AddComment(Comment comment)
         {
             this.Comments.Add(comment);
+            DomainEvents.Add(new CommentAdded(comment.UserId));
         }
 
         public void RemoveComment(Guid commentId)

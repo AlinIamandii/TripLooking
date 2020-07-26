@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using TripLooking.Business.DomainEvents;
 using TripLooking.Business.Trips.Models.Comment;
 using TripLooking.Business.Trips.Services.Interfaces;
 using TripLooking.Entities.Trips;
@@ -17,12 +18,14 @@ namespace TripLooking.Business.Trips.Services.Implementations
         private readonly ITripsRepository _repository;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _accessor;
+        private readonly EventDispatcher _eventDispatcher;
 
-        public CommentsService(ITripsRepository repository, IMapper mapper, IHttpContextAccessor accessor)
+        public CommentsService(ITripsRepository repository, IMapper mapper, IHttpContextAccessor accessor, EventDispatcher eventDispatcher)
         {
             _repository = repository;
             _mapper = mapper;
             _accessor = accessor;
+            _eventDispatcher = eventDispatcher;
         }
 
         public async Task<IEnumerable<CommentModel>> Get(Guid tripId)
@@ -42,6 +45,8 @@ namespace TripLooking.Business.Trips.Services.Implementations
 
             _repository.Update(trip);
             await _repository.SaveChanges();
+            
+            _eventDispatcher.Dispatch(trip.DomainEvents);
 
             return _mapper.Map<CommentModel>(comment);
         }

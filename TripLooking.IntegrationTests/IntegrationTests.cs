@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using TripLooking.API;
+using TripLooking.Business.DomainLogger;
 using TripLooking.Business.Identity.Models;
 using TripLooking.Entities.Identity;
 using TripLooking.Persistence;
@@ -22,9 +26,21 @@ namespace TripLooking.IntegrationTests
 
         protected Guid AuthenticatedUserId { get; private set; }
 
+        protected Mock<IDomainLogger> MockLogger { get; private set; }
+
         protected IntegrationTests()
         {
-            webApplicationFactory = new WebApplicationFactory<Startup>().WithWebHostBuilder(builder => { });
+            MockLogger = new Mock<IDomainLogger>();
+            webApplicationFactory = new WebApplicationFactory<Startup>().WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
+                {
+                    var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IDomainLogger));
+                    services.Remove(descriptor);
+
+                    services.AddSingleton(MockLogger.Object);
+                });
+            });
             HttpClient = webApplicationFactory.CreateClient();
         }
 
@@ -34,6 +50,7 @@ namespace TripLooking.IntegrationTests
             {
                 await ExecuteDatabaseAction(async(tripsContext) => await ClearDatabase(tripsContext));
                 await SetAuthenticationToken();
+                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AuthenticationToken);
             });
         }
 

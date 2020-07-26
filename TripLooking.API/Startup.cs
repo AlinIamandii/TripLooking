@@ -13,6 +13,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using TripLooking.API.Extensions;
+using TripLooking.Business.DomainEvents;
+using TripLooking.Business.DomainLogger;
 using TripLooking.Business.Identity;
 using TripLooking.Business.Identity.Models;
 using TripLooking.Business.Identity.Services.Implementations;
@@ -71,6 +73,8 @@ namespace TripLooking.API
                 .AddFluentValidation();
 
             services.AddTransient<IValidator<UserRegisterModel>, UserRegisterModelValidator>();
+            services.AddScoped<IDomainLogger, DomainLogger>();
+            services.AddScoped<EventDispatcher>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
