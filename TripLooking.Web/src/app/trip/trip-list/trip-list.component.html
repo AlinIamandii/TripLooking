@@ -1,13 +1,12 @@
+<div class="page-container">
+  <h1>
+    Trip Details
+  </h1>
 
-  <div class="page-container">
-    <h1>
-      Trip Details
-    </h1>
-
-    <div class="cards">
-      <app-tile  *ngFor="let trip of tripList" label="{{trip.name}}" background="{{trip.backgroundImage}}"  (click)="goToTrip(trip.id)"></app-tile>
-    </div>
-
+  <div class="cards">
+    <app-tile *ngFor="let trip of tripList"
+              label="{{trip.title}}"
+              background="../../assets/images/travel_logo.png"
+              (click)="goToTrip(trip.id)"></app-tile>
   </div>
-
-
+</div>

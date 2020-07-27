@@ -1,25 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../user.service';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { Router } from '@angular/router';
+
+import { UserService } from '../services';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   public username: string;
   constructor(
-    public readonly userService: UserService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly cdRef: ChangeDetectorRef,
+    public readonly userService: UserService
   ) {}
 
-  ngOnInit() {
-    this.username = '';
-  }
-
-  logout(): void {
-    this.userService.email.next(null);
+  public logout(): void {
     this.router.navigate(['authentication']);
+    localStorage.removeItem('email');
+    this.username = localStorage.getItem('email');
   }
 }

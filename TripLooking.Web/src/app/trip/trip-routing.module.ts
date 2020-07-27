@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { TripDetailsComponent } from './trip-details/trip-details.component';
 import { TripListComponent } from './trip-list/trip-list.component';
-import { CreateComponent } from './create/create.component';
+
 
 const routes: Routes = [
   {
@@ -12,13 +12,9 @@ const routes: Routes = [
     component: TripListComponent,
   },
   {
-    path: 'details',
+    path: 'details/:id',
     pathMatch: 'full',
     component: TripDetailsComponent,
-  },
-  {
-    path: 'create/{:id}',
-    component: CreateComponent,
   },
 ];
 
@@ -26,4 +22,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TripRoutingModule {}
+export class TripRoutingModule { }

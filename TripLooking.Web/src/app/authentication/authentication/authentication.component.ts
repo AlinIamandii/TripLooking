@@ -1,65 +1,35 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/shared/services';
 
 import { LoginModel } from '../models/login.model';
 import { RegisterModel } from '../models/register.model';
 import { AuthenticationService } from '../services/authentication.service';
-import { UserService } from 'src/app/shared/user.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-authentication',
   templateUrl: './authentication.component.html',
   styleUrls: ['./authentication.component.scss'],
+  providers: [AuthenticationService],
 })
-export class AuthenticationComponent implements OnDestroy {
-  private subscription: Subscription;
+export class AuthenticationComponent {
   public isSetRegistered: boolean = false;
   public isAdmin: boolean = false;
-  public email: string = null;
-  public password: string = null;
-  public fullName: string = null;
+  public formGroup: FormGroup;
 
-  public form: FormGroup;
-  public data = [
-    {
-      fruit: 'Orange',
-      color: 'Orange',
-    },
-    {
-      fruit: 'Strawberry',
-      color: 'Red',
-    },
-    {
-      fruit: 'Pineapple',
-      color: 'Yellow',
-    },
-  ];
-
-  public config = {
-    email: 'cutarescu@gmail.com',
-    password: 'parola',
-    fullName: ' gigi',
-  };
-
-  public defaultEmail: string = 'default@domain.net';
-  // in constructor apar serviciile pe care le injectam la noi in aplicatie
   constructor(
-    private readonly authenticationService: AuthenticationService,
     private readonly router: Router,
+    private readonly authenticationService: AuthenticationService,
+    private readonly formBuilder: FormBuilder,
     private readonly userService: UserService
   ) {
-    this.subscription = new Subscription();
-    this.form = new FormGroup({
-      email: new FormControl(this.config.email, [Validators.maxLength(5)]),
-      password: new FormControl(this.config.password, [Validators.required]),
-      fullName: new FormControl(this.config.fullName, []),
+    this.formGroup = this.formBuilder.group({
+      email: new FormControl(null),
+      password: new FormControl(null),
+      fullName: new FormControl(null),
     });
-  }
-
-  public ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.userService.username.next('');
   }
 
   public setRegister(): void {
@@ -72,45 +42,21 @@ export class AuthenticationComponent implements OnDestroy {
 
   public authenticate(): void {
     if (this.isSetRegistered) {
-      // initializam variabila cu modelul stabilit pentru register
-      // const registerModel: RegisterModel = {
-      //   email: this.emailControl.value,
-      //   password: this.passwordControl.value,
-      //   fullName: this.fullNameControl.value,
-      // };
-      // this.subscription.add(
-      //   // aici apelam metoda register din serviciu, pentru a face requestul catre back end
-      //   this.authenticationService.register(registerModel).subscribe(() => {
-      //     this.router.navigate(['dashboard']);
-      //     this.userService.email.next(registerModel.email);
-      //   })
-      // );
+      const data: LoginModel = this.formGroup.getRawValue();
+
+      this.authenticationService.register(data).subscribe(() => {
+        this.userService.username.next(data.email);
+        this.router.navigate(['dashboard']);
+      });
     } else {
-      // initializam variabila cu modelul stabilit pentru login
-      const loginModel: LoginModel = {
-        email: this.email,
-        password: this.password,
-      };
+      const data: RegisterModel = this.formGroup.getRawValue();
+      this.formGroup.removeControl('fullName');
 
-      this.subscription.add(
-        // aici apelam metoda login din serviciu, pentru a face requestul catre back end
-        this.authenticationService.login(loginModel).subscribe(() => {
-          this.router.navigate(['dashboard']);
-          this.userService.email.next(loginModel.email);
-        })
-      );
+      this.authenticationService.login(data).subscribe((logData: any) => {
+        localStorage.setItem('userToken', JSON.stringify(logData.token));
+        this.userService.username.next(data.email);
+        this.router.navigate(['dashboard']);
+      });
     }
-  }
-
-  public get emailControl(): FormControl {
-    return this.form.controls.email as FormControl;
-  }
-
-  public get isFormValid(): boolean {
-    return this.form.valid;
-  }
-
-  public setValue(): void {
-    this.emailControl.setValue(this.defaultEmail);
   }
 }

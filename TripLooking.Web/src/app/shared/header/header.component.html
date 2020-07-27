@@ -11,13 +11,16 @@
     </h2>
   </section>
 
-  <section class="flex-row-end" *ngIf="userService.email | async as username">
-    <img src="../../assets/images/profile.png">
-    <h3 class="flex-row-end">
-      Welcome, {{username}}
-    </h3>
-    <img class="logout"
-         src="../../assets/images/logout.svg"
-         (click)="logout()">
+  <section
+    *ngIf="userService.username | async as username"
+    class="flex-row-end"
+  >
+    <img src="../../assets/images/profile.png" />
+    <h3 class="flex-row-end">Welcome, {{ username }}</h3>
+    <img
+      class="logout"
+      src="../../assets/images/logout.svg"
+      (click)="logout()"
+    />
   </section>
 </header>

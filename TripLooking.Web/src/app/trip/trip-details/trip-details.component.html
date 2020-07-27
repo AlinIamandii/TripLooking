@@ -12,77 +12,77 @@
 
   </section>
   <section class="form-section">
+    <form [formGroup]="formGroup">
 
-    <div class="form-group">
-      <input type="text"
-             placeholder="Enter trip name"
-             [(ngModel)]="name"
-             [disabled]="!isEditing">
-    </div>
+      <div class="form-group">
+        <input type="text"
+               placeholder="Enter trip name"
+               formControlName="title">
+      </div>
 
-    <div class="form-group">
-      <p *ngIf="!isEditing; else notEditable">{{description}}</p>
+      <div class="form-group">
+        <p *ngIf="isFormDisabled; else notEditable">{{description}}</p>
 
-      <ng-template #notEditable>
-        <textarea class="trip-description"
-                  contenteditable="true"
-                  placeholder="Enter trip description">{{description}}</textarea>
-      </ng-template>
-
-    </div>
-
-    <div class="form-group">
-      <label> Is this a private trip</label>
-      <input type="checkbox"
-             [disabled]="!isEditing"
-             placeholder="Trip name"
-             [(ngModel)]="isPrivate">
-    </div>
-
-    <div class="photos">
-      <label class="photos-title">Photos</label>
-
-      <div class="photos-list">
-        <div *ngIf="photos.length > 0; else noPhotos">
-
-        </div>
-        <ng-template #noPhotos>
-          <label *ngIf="photos.length === 0">No photos available</label>
+        <ng-template #notEditable>
+          <textarea class="trip-description"
+                    contenteditable="true"
+                    placeholder="Enter trip description"
+                    formControlName="description">{{description}}</textarea>
         </ng-template>
 
-        <div class="add-photos"
-             *ngIf="isEditing">
-          <div class="photo-file-container">
+      </div>
 
+      <div class="form-group">
+        <label> Is this a private trip</label>
+        <input type="checkbox"
+               formControlName="private">
+      </div>
+
+      <div class="photos">
+        <label class="photos-title">Photos</label>
+
+        <div class="photos-list">
+          <div *ngIf="photos.length > 0; else noPhotos">
+
+          </div>
+          <ng-template #noPhotos>
+            <label *ngIf="photos.length === 0">No photos available</label>
+          </ng-template>
+
+          <div class="add-photos"
+               *ngIf="!isFormDisabled">
+            <div class="photo-file-container">
+
+              <img class="photo-file"
+                   *ngFor="let photo of photos"
+                   [src]="photo">
+            </div>
+
+            <input #Image
+                   type="file"
+                   (change)="handleFileInput($event.target.files)" />
+            <img class="photo-file"
+                 [src]="imageUrl">
+          </div>
+
+          <div class="added-photos"
+               *ngIf="isFormDisabled">
             <img class="photo-file"
                  *ngFor="let photo of photos"
                  [src]="photo">
           </div>
-
-          <input #Image
-                 type="file"
-                 (change)="handleFileInput($event.target.files)" />
-          <img class="photo-file"
-               [src]="imageUrl">
         </div>
 
-        <div class="added-photos"
-             *ngIf="!isEditing">
-          <img class="photo-file"
-               *ngFor="let photo of photos"
-               [src]="photo">
-        </div>
       </div>
 
-    </div>
-
-    <button type="button"
-            *ngIf="!isEditing; else saveButton"
-            (click)="startUpdating()"><span> Update trip</span></button>
-    <ng-template #saveButton>
       <button type="button"
-              (click)="save()"><span>Save trip</span></button>
-    </ng-template>
+              *ngIf="isFormDisabled; else saveButton"
+              (click)="startUpdating()"><span> Update trip</span></button>
+      <ng-template #saveButton>
+        <button type="button"
+                (click)="save()"><span>Save trip</span></button>
+      </ng-template>
 
+    </form>
   </section>
 </div>

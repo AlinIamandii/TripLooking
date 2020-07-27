@@ -1,44 +1,85 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
+import { TripModel } from '../models';
+import { TripService } from '../services/trip.service';
 
 @Component({
   selector: 'app-trip-details',
   templateUrl: './trip-details.component.html',
-  styleUrls: ['./trip-details.component.scss']
+  styleUrls: ['./trip-details.component.scss'],
+  providers: [FormBuilder]
 })
-export class TripDetailsComponent implements OnInit {
+export class TripDetailsComponent implements OnInit, OnDestroy {
   fileToUpload: any;
   imageUrl: any;
 
-  name: string;
-  description: string;
-  isPrivate: boolean;
+  formGroup: FormGroup;
   isAdmin: boolean;
-  isEditing: boolean;
+  isAddMode: boolean;
   photos: Blob[] = [];
 
-  constructor(private router: Router) { }
+  private routeSub: Subscription = new Subscription();
+
+  get description(): string {
+    return this.formGroup.get('description').value;
+  }
+
+  get isFormDisabled(): boolean {
+    return this.formGroup.disabled;
+  }
+
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private service: TripService) { }
 
   ngOnInit(): void {
+    this.formGroup = this.formBuilder.group({
+      id: new FormControl(),
+      title: new FormControl(),
+      description: new FormControl(),
+      private: new FormControl(false)
+    });
+
     if (this.router.url === '/create-trip') {
-      this.isEditing = true;
+      this.isAddMode = true;
     } else {
-      this.name = "My first trip";
-      this.description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
-      this.isEditing = false;
+      //Getting id from url
+      this.routeSub = this.activatedRoute.params.subscribe(params => {
+        //Getting details for the trip with the id found
+        this.service.get(params['id']).subscribe((data: TripModel) => {
+          this.formGroup.patchValue(data);
+        })
+        this.formGroup.disable();
+      });
+      this.isAddMode = false;
     }
-    this.isPrivate = true;
     this.isAdmin = true;
   }
 
+  ngOnDestroy(): void {
+    this.routeSub.unsubscribe();
+  }
+
   startUpdating() {
-    this.isEditing = true;
+    this.formGroup.enable();
   }
 
   save() {
+    if (this.isAddMode) {
+      this.service.post(this.formGroup.getRawValue()).subscribe();
+      this.router.navigate(['list']);
+    } else {
+      this.service.patch(this.formGroup.getRawValue()).subscribe();
+    }
+
     this.photos.push(this.imageUrl);
     this.imageUrl = null;
-    this.isEditing = false;
+    this.formGroup.disable();
   }
 
   handleFileInput(file: FileList) {
