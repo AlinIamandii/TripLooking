@@ -34,5 +34,5 @@ Learning actions order:
 				- https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.1
 - code coverage on all the code with dotCover
 		- exercise: 
-				- discuss how many test cases there are 
+				- discuss how many test cases there are on Trip.RemoveComment
 				- add unit test for Trip.RemoveComment to have full code coverage on this method
