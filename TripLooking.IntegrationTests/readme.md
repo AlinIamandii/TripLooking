@@ -1,0 +1,38 @@
+﻿References:
+- https://docs.microsoft.com/en-us/visualstudio/test/create-a-unit-test-project?view=vs-2019
+- https://enterprisecraftsmanship.com/posts/unit-test-value-proposition/ - serveral articles in series
+- dotCover for code coverage - https://www.jetbrains.com/dotcover/
+- https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-3.1
+
+Learning actions order:
+- new xUnit test project
+	- update nuget packages
+	- Reference the Microsoft.AspNetCore.Mvc.Testing package for infrastructure components like test web host and in-memory test server
+	- Specify the Web SDK in the project file (<Project Sdk="Microsoft.NET.Sdk.Web">).
+	- install Microsoft.EntityFrameworkCore.SqlServer nuget package in order to test real integration with the database
+	- database used in "Repository & logic(business) layer" training 
+	- install Microsoft.AspNet.WebApi.Client to post json async
+	- create base integration tests class
+		- create HttpClient - provide snippet in teams chat
+		- cleanup database - by own, with help snippet if needed
+		- create JWT token
+				- request ideas from the students
+				- provide snippet in teams chat
+		- set authorization request header - by own
+- create test class CommentsController
+		- create test for get
+				- define 3 AAA
+				- provide snippet
+		- create test for add - by own
+- use mocks for logging and domain events
+		- explain where connection to external world should be placed and how to use domain events to communicate to log file
+		- provide branch for inspiration on how to use domain events
+		- create mock for domain logger - snippet
+		- verify mock in existing Add test - by own
+		- challenge for home: implement Serilogger with log to file
+				- https://docs.microsoft.com/en-us/aspnet/core/test/troubleshoot-azure-iis?view=aspnetcore-3.1
+				- https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.1
+- code coverage on all the code with dotCover
+		- exercise: 
+				- discuss how many test cases there are 
+				- add unit test for Trip.RemoveComment to have full code coverage on this method
