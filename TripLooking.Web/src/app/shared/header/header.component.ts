@@ -1,10 +1,6 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
 
 import { UserService } from '../services';
 
@@ -14,16 +10,20 @@ import { UserService } from '../services';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  public username: string;
+  username: string = '';
   constructor(
-    private readonly router: Router,
-    private readonly cdRef: ChangeDetectorRef,
-    public readonly userService: UserService
-  ) {}
+    public readonly userService: UserService,
+    private readonly authenticationService: AuthenticationService,
+    private readonly router: Router
+  ) {
+
+    this.userService.usernameSubject.subscribe(data => {
+      this.username = data;
+    })
+  }
 
   public logout(): void {
-    this.router.navigate(['authentication']);
-    localStorage.removeItem('email');
-    this.username = localStorage.getItem('email');
+    this.authenticationService.logout();
+    this.router.navigate(['/authentication']);
   }
 }

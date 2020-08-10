@@ -1,13 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  public username: Subject<string>;
+  usernameSubject: BehaviorSubject<string>;
 
   constructor() {
-    this.username = new Subject<string>();
+    this.usernameSubject = new BehaviorSubject<string>('');
+
+    const username = localStorage.getItem('username');
+    if (username) {
+      this.usernameSubject.next(username);
+    }
+  }
+
+  setUsername(username: string): void {
+    localStorage.setItem('username', username);
+    this.usernameSubject.next(username);
   }
 }

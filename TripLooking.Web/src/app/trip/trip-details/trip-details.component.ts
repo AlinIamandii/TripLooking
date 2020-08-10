@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { TripModel } from '../models';
+import { PhotosService } from '../services/photos.service';
 import { TripService } from '../services/trip.service';
 
 @Component({
@@ -14,7 +15,6 @@ import { TripService } from '../services/trip.service';
 })
 export class TripDetailsComponent implements OnInit, OnDestroy {
   fileToUpload: any;
-  imageUrl: any;
 
   formGroup: FormGroup;
   isAdmin: boolean;
@@ -35,7 +35,8 @@ export class TripDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private service: TripService) { }
+    private service: TripService,
+    private photosService: PhotosService) { }
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
@@ -76,9 +77,8 @@ export class TripDetailsComponent implements OnInit, OnDestroy {
     } else {
       this.service.patch(this.formGroup.getRawValue()).subscribe();
     }
+    this.photosService.post(this.formGroup.get('id').value, this.photos[0]).subscribe();
 
-    this.photos.push(this.imageUrl);
-    this.imageUrl = null;
     this.formGroup.disable();
   }
 
@@ -87,7 +87,7 @@ export class TripDetailsComponent implements OnInit, OnDestroy {
 
     let reader = new FileReader();
     reader.onload = (event: any) => {
-      this.imageUrl = event.target.result;
+      this.photos.push(event.target.result);
     }
     reader.readAsDataURL(this.fileToUpload);
   }

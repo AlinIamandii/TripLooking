@@ -1,21 +1,36 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
-  public endpoint: string =
-    'http://trip-looking.ashbell-platform.com/api/v1/auth';
-  constructor(private readonly httpClient: HttpClient) {}
+  endpoint: string = 'http://trip-looking.ashbell-platform.com/api/v1/auth';
 
-  public login(data: unknown): Observable<unknown> {
+  constructor(
+    private readonly httpClient: HttpClient,
+    private readonly jwtHelperService: JwtHelperService) { }
+
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('userToken');
+
+    if (token) {
+      return !this.jwtHelperService.isTokenExpired(token);
+    }
+    return false;
+  }
+
+  login(data: unknown): Observable<unknown> {
     return this.httpClient.post(`${this.endpoint}/login`, data);
   }
 
-  public register(data: unknown): Observable<unknown> {
+  logout(): void {
+    localStorage.removeItem('userToken');
+  }
+
+  register(data: unknown): Observable<unknown> {
     return this.httpClient.post(`${this.endpoint}/register`, data);
   }
 }

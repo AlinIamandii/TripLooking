@@ -29,7 +29,8 @@ export class AuthenticationComponent {
       password: new FormControl(null),
       fullName: new FormControl(null),
     });
-    this.userService.username.next('');
+    this.authenticationService.logout();
+    this.userService.setUsername('');
   }
 
   public setRegister(): void {
@@ -45,7 +46,7 @@ export class AuthenticationComponent {
       const data: LoginModel = this.formGroup.getRawValue();
 
       this.authenticationService.register(data).subscribe(() => {
-        this.userService.username.next(data.email);
+        this.userService.setUsername(data.email);
         this.router.navigate(['dashboard']);
       });
     } else {
@@ -54,7 +55,7 @@ export class AuthenticationComponent {
 
       this.authenticationService.login(data).subscribe((logData: any) => {
         localStorage.setItem('userToken', JSON.stringify(logData.token));
-        this.userService.username.next(data.email);
+        this.userService.setUsername(data.email);
         this.router.navigate(['dashboard']);
       });
     }
