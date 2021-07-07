@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
+using TripLooking.Business.Trips;
+using TripLooking.Business.Trips.Services;
 using TripLooking.Persistence;
 
 namespace TripLooking.API
@@ -29,9 +31,12 @@ namespace TripLooking.API
                 config.UseSqlServer(Configuration.GetConnectionString("TripsConnection"));
             });
 
-            services.AddSwaggerGen();
+            services.AddAutoMapper(config => { config.AddProfile<TripsMappingProfile>(); });
 
             services.AddScoped<ITripsRepository, TripsRepository>();
+            services.AddScoped<ITripsService, TripsService>();
+
+            services.AddSwaggerGen();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

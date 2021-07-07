@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TripLooking.Business.Trips.Services;
 using TripLooking.Persistence;
 
 namespace TripLooking.API.Controllers
@@ -9,17 +10,17 @@ namespace TripLooking.API.Controllers
     [ApiController]
     public class TripsController : ControllerBase
     {
-        private readonly ITripsRepository tripsRepository;
+        private readonly ITripsService tripsService;
 
-        public TripsController(ITripsRepository tripsRepository)
+        public TripsController(ITripsService tripsService)
         {
-            this.tripsRepository = tripsRepository;
+            this.tripsService = tripsService;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
-            var trip = await tripsRepository.GetTripById(id);
+            var trip = await tripsService.GetById(id);
 
             return Ok(trip);
         }

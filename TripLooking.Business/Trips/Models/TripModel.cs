@@ -9,5 +9,7 @@ namespace TripLooking.Business.Trips.Models
         public string Title { get; set; }
 
         public string Description { get; set; }
+
+        public bool Private { get; set; }
     }
 }
