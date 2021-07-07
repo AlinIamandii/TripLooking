@@ -12,6 +12,8 @@ namespace TripLooking.Business.Trips
         public TripsMappingProfile()
         {
             CreateMap<Trip, TripModel>();
+
+            CreateMap<CreateTripModel, Trip>();
         }
     }
 }

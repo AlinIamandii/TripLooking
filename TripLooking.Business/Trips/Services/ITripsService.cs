@@ -7,5 +7,7 @@ namespace TripLooking.Business.Trips.Services
     public interface ITripsService
     {
         Task<TripModel> GetById(Guid id);
+
+        Task<TripModel> Create(CreateTripModel model);
     }
 }

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using TripLooking.Business.Trips.Models;
+using TripLooking.Entities.Trips;
 using TripLooking.Persistence;
 
 namespace TripLooking.Business.Trips.Services
@@ -22,6 +23,17 @@ namespace TripLooking.Business.Trips.Services
             var trip = await this.tripsRepository.GetTripById(id);
 
             return mapper.Map<TripModel>(trip);
+        }
+
+        public async Task<TripModel> Create(CreateTripModel model)
+        {
+            var trip = this.mapper.Map<Trip>(model);
+
+            await this.tripsRepository.Create(trip);
+            await this.tripsRepository.SaveChanges();
+
+            return mapper.Map<TripModel>(trip);
+
         }
     }
 }

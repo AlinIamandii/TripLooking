@@ -19,5 +19,15 @@ namespace TripLooking.Persistence
             return await this.context.Trips.Include(x => x.Comments)
                 .SingleOrDefaultAsync(i => i.Id == id);
         }
+
+        public async Task Create(Trip trip)
+        {
+            await this.context.Trips.AddAsync(trip);
+        }
+
+        public async Task SaveChanges()
+        {
+            await this.context.SaveChangesAsync();
+        }
     }
 }
