@@ -4,7 +4,7 @@ using TripLooking.Entities.Trips;
 
 namespace TripLooking.Persistence
 {
-    public class TripsRepository : ITripRepository
+    public class TripsRepository : ITripsRepository
     {
         private TripsContext context;
 

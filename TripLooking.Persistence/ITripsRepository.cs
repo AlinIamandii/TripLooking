@@ -4,7 +4,7 @@ using TripLooking.Entities.Trips;
 
 namespace TripLooking.Persistence
 {
-    public interface ITripRepository
+    public interface ITripsRepository
     {
         Task<Trip> GetTripById(Guid id);
     }
