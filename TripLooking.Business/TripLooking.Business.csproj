@@ -9,4 +9,8 @@
     <ProjectReference Include="..\TripLooking.Persistence\TripLooking.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Trips\Services\" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TripLooking.Entities.Trips;
 
 namespace TripLooking.Persistence
@@ -15,7 +16,8 @@ namespace TripLooking.Persistence
 
         public async Task<Trip> GetTripById(Guid id)
         {
-            return await this.context.Trips.FindAsync(id);
+            return await this.context.Trips.Include(x => x.Comments)
+                .SingleOrDefaultAsync(i => i.Id == id);
         }
     }
 }
