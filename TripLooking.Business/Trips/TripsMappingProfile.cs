@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using AutoMapper;
 using TripLooking.Business.Trips.Models;
+using TripLooking.Business.Trips.Models.Comments;
 using TripLooking.Entities.Trips;
 
 namespace TripLooking.Business.Trips
@@ -14,6 +13,11 @@ namespace TripLooking.Business.Trips
             CreateMap<Trip, TripModel>();
 
             CreateMap<CreateTripModel, Trip>();
+
+            CreateMap<CreateCommentModel, Comment>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => Guid.NewGuid()));
+
+            CreateMap<Comment, CommentModel>();
         }
     }
 }

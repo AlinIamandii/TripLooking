@@ -10,6 +10,8 @@ namespace TripLooking.Persistence
 
         Task Create(Trip trip);
 
+        void Update(Trip trip);
+
         Task SaveChanges();
     }
 }

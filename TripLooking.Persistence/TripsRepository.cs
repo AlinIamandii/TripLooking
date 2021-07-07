@@ -25,6 +25,11 @@ namespace TripLooking.Persistence
             await this.context.Trips.AddAsync(trip);
         }
 
+        public void Update(Trip trip)
+        { 
+            this.context.Trips.Update(trip);
+        }
+
         public async Task SaveChanges()
         {
             await this.context.SaveChangesAsync();

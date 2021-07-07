@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +9,10 @@ using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
 using TripLooking.Business.Trips;
+using TripLooking.Business.Trips.Models;
 using TripLooking.Business.Trips.Services;
+using TripLooking.Business.Trips.Services.Comments;
+using TripLooking.Business.Trips.Validators;
 using TripLooking.Persistence;
 
 namespace TripLooking.API
@@ -35,8 +40,12 @@ namespace TripLooking.API
 
             services.AddScoped<ITripsRepository, TripsRepository>();
             services.AddScoped<ITripsService, TripsService>();
+            services.AddScoped<ICommentsService, CommentsService>();
+            services.AddScoped<IValidator<CreateTripModel>, CreateTripModelValidator>();
+
 
             services.AddSwaggerGen();
+            services.AddFluentValidation();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
