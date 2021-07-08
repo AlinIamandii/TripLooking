@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TripLooking.Business.Trips.Models
 {
-    public sealed class CreateTripModel
+    public sealed class UpsertTripModel
     {
         public string Title { get; set; }
 

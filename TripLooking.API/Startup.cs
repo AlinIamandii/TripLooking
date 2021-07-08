@@ -12,6 +12,7 @@ using TripLooking.Business.Trips;
 using TripLooking.Business.Trips.Models;
 using TripLooking.Business.Trips.Services;
 using TripLooking.Business.Trips.Services.Comments;
+using TripLooking.Business.Trips.Services.Photos;
 using TripLooking.Business.Trips.Validators;
 using TripLooking.Persistence;
 
@@ -41,8 +42,8 @@ namespace TripLooking.API
             services.AddScoped<ITripsRepository, TripsRepository>();
             services.AddScoped<ITripsService, TripsService>();
             services.AddScoped<ICommentsService, CommentsService>();
-            services.AddScoped<IValidator<CreateTripModel>, CreateTripModelValidator>();
-
+            services.AddScoped<IPhotosService, PhotosService>();
+            services.AddScoped<IValidator<UpsertTripModel>, CreateTripModelValidator>();
 
             services.AddSwaggerGen();
             services.AddFluentValidation();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using TripLooking.Business.Trips.Models;
@@ -9,31 +10,56 @@ namespace TripLooking.Business.Trips.Services
 {
     public sealed class TripsService : ITripsService
     {
-        private readonly ITripsRepository tripsRepository;
-        private readonly IMapper mapper;
+        private readonly ITripsRepository _tripsRepository;
+        private readonly IMapper _mapper;
 
         public TripsService(ITripsRepository tripsRepository, IMapper mapper)
         {
-            this.tripsRepository = tripsRepository;
-            this.mapper = mapper;
+            _tripsRepository = tripsRepository;
+            _mapper = mapper;
+        }
+
+        public IEnumerable<TripModel> GetAll()
+        {
+            var trips = _tripsRepository.GetAll();
+
+            return _mapper.Map<IEnumerable<TripModel>>(trips);
         }
 
         public async Task<TripModel> GetById(Guid id)
         {
-            var trip = await this.tripsRepository.GetTripById(id);
+            var trip = await _tripsRepository.GetTripById(id);
 
-            return mapper.Map<TripModel>(trip);
+            return _mapper.Map<TripModel>(trip);
         }
 
-        public async Task<TripModel> Create(CreateTripModel model)
+        public async Task<TripModel> Create(UpsertTripModel model)
         {
-            var trip = this.mapper.Map<Trip>(model);
+            var trip = _mapper.Map<Trip>(model);
 
-            await this.tripsRepository.Create(trip);
-            await this.tripsRepository.SaveChanges();
+            await _tripsRepository.Create(trip);
+            await _tripsRepository.SaveChanges();
 
-            return mapper.Map<TripModel>(trip);
+            return _mapper.Map<TripModel>(trip);
 
+        }
+
+        public async Task Delete(Guid tripId)
+        {
+            var trip = await _tripsRepository.GetTripById(tripId);
+
+            _tripsRepository.Delete(trip);
+            await _tripsRepository.SaveChanges();
+        }
+
+        public async Task Update(Guid tripId, UpsertTripModel model)
+        {
+            var trip = await _tripsRepository.GetTripById(tripId);
+
+            _mapper.Map(model, trip);
+
+            _tripsRepository.Update(trip);
+            await _tripsRepository.SaveChanges();
         }
     }
 }

@@ -7,5 +7,7 @@ namespace TripLooking.Business.Trips.Models.Comments
     public sealed class CreateCommentModel
     {
         public string Content { get; set; }
+
+        public Guid UserId { get; set; }
     }
 }
