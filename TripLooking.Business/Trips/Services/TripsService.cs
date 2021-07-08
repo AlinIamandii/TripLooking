@@ -41,7 +41,6 @@ namespace TripLooking.Business.Trips.Services
             await _tripsRepository.SaveChanges();
 
             return _mapper.Map<TripModel>(trip);
-
         }
 
         public async Task Delete(Guid tripId)
