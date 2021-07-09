@@ -25,7 +25,7 @@ namespace TripLooking.Persistence
             return await _context.Trips
                 .Include(x => x.Comments)
                 .Include(x => x.Photos)
-                .FirstAsync(i => i.Id == id);
+                .FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task Create(Trip trip)
