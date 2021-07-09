@@ -14,7 +14,7 @@ namespace TripLooking.API.Tests
         public HttpClient Client { get; }
 
         [Fact]
-        public async void When_GetTRips_Expect_ResponseShouldBeSuccessStatusCode()
+        public async void When_GetTrips_Expect_ResponseShouldBeSuccessStatusCode()
         {
             var result = await Client.GetAsync(@"/api/trips");
             
