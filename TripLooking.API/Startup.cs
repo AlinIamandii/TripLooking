@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
 using Newtonsoft.Json;
 using TripLooking.Business.Trips;
 using TripLooking.Business.Trips.Models;
@@ -29,6 +27,7 @@ namespace TripLooking.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers()
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
@@ -37,34 +36,39 @@ namespace TripLooking.API
                 config.UseSqlServer(Configuration.GetConnectionString("TripsConnection"));
             });
 
+            services.AddSwaggerGen();
             services.AddAutoMapper(config => { config.AddProfile<TripsMappingProfile>(); });
 
-            services.AddScoped<ITripsRepository, TripsRepository>();
-            services.AddScoped<ITripsService, TripsService>();
-            services.AddScoped<ICommentsService, CommentsService>();
-            services.AddScoped<IPhotosService, PhotosService>();
-            services.AddScoped<IValidator<UpsertTripModel>, CreateTripModelValidator>();
-
-            services.AddSwaggerGen();
-            services.AddFluentValidation();
+            services
+                .AddScoped<ITripsRepository, TripsRepository>()
+                .AddScoped<ITripsService, TripsService>()
+                .AddScoped<ICommentsService, CommentsService>()
+                .AddScoped<IPhotosService, PhotosService>()
+                .AddScoped<IValidator<UpsertTripModel>, CreateTripModelValidator>();
+            
+            services
+                .AddMvc()
+                .AddFluentValidation();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseDeveloperExceptionPage();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API");
-            });
+            app
+                .UseSwagger()
+                .UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API");
+                });
 
             app
                 .UseHttpsRedirection()
                 .UseRouting()
+                .UseCors(options =>  options
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader())
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseEndpoints(endpoints => endpoints.MapControllers());
