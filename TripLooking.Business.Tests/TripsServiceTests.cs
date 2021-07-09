@@ -45,8 +45,8 @@ namespace TripLooking.Business.Tests
         public void When_GetAllIsCalled_ExpectInvokeGetAllFromRepository_and_ReturnMappedResults()
         {
             // Arrange
-            var tripEntities = new List<Trip> {new Trip("dummy", "dummy", false)};
-            var tripModels = new List<TripModel> {new TripModel{Id = tripEntities.First().Id, Title = "dummy", Description = "dummy", Private = false}};
+            var tripEntities = new List<Trip> {new("dummy", "dummy", false)};
+            var tripModels = new List<TripModel> {new() {Id = tripEntities.First().Id, Title = "dummy", Description = "dummy", Private = false}};
             _tripsRepository.Setup(mock => mock.GetAll()).Returns(tripEntities.AsEnumerable());
             _mapper.Setup(mock => mock.Map<IEnumerable<TripModel>>(tripEntities)).Returns(tripModels.AsEnumerable());
 

@@ -16,6 +16,7 @@ namespace TripLooking.Business.Trips
 
             CreateMap<CreateCommentModel, Comment>()
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => Guid.NewGuid()));
+
             CreateMap<Comment, CommentModel>();
 
             CreateMap<PhotoModel, Photo>();
